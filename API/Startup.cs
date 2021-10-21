@@ -1,3 +1,4 @@
+using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,11 +22,11 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddScoped<IProductRepository,ProductRepository>();//AddScoped su vida comienza cuando realiza la peticion y termina cuando tiene respuesta a la peticion / pasamos el repositorio IProductRepository, luego la clase ProductRepository
             services.AddControllers();
             services.AddSwaggerGen();
             services.AddDbContext<StoreContext>(x => 
-                x.UseSqlite(_config.GetConnectionString("DefaultConnection")));
+                x.UseSqlite(_config.GetConnectionString("DefaultConnection")));//AddDbContext significa que el servicio tendra vida por el tiempo de vida de la peticion
           
         }
 
@@ -40,8 +41,6 @@ namespace API
             }
 
             app.UseHttpsRedirection();
-
-            app.UseAuthentication();
 
             app.UseRouting();
 
