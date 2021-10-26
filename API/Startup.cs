@@ -1,3 +1,4 @@
+using API.Helpers;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
@@ -23,6 +24,8 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IProductRepository,ProductRepository>();//AddScoped su vida comienza cuando realiza la peticion y termina cuando tiene respuesta a la peticion / pasamos el repositorio IProductRepository, luego la clase ProductRepository
+            services.AddScoped(typeof(IGenericRepository<>),(typeof(GenericRepository<>)));
+            services.AddAutoMapper(typeof(MappingProfiles)); //agregamos nuestro automapper como servicio - ponemos en el parentesis la clase mapper que se creo dentro de helpers
             services.AddControllers();
             services.AddSwaggerGen();
             services.AddDbContext<StoreContext>(x => 
@@ -43,6 +46,8 @@ namespace API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseStaticFiles();
 
             app.UseAuthorization();
 
