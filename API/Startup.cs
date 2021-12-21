@@ -34,6 +34,15 @@ namespace API
 
             //agregamos una extension para la documentacion del swagger
             services.AddSwaggerDocumentation();
+
+            //agregarmos cors
+            services.AddCors(opt=>
+            {
+                opt.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,6 +64,9 @@ namespace API
 
             app.UseStaticFiles();//permite cargar archivos estaticos en nuestro proyecto como imagenes por ejemplo
 
+            //agregando cors policy 
+            app.UseCors("CorsPolicy");
+            
             app.UseAuthorization();
 
              //agregamos una extension para la documentacion del swagger
